@@ -1,0 +1,15 @@
+{
+  "name": "githubfavorites",
+  "version": "1.0.0",
+  "description": "An API that I can select an  person wich I have in my favorite list.",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
