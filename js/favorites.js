@@ -3,13 +3,13 @@ export class GithubUser {
       const endpoint = `https://api.github.com/users/${username}`
 
       return fetch(endpoint)
-      .then(data => data.json())
-      .then(({ login, name, public_repos, followers}) => ({
-         login,
-         name,
-         public_repos,
-         followers,
-      }))
+         .then(data => data.json())
+         .then(({ login, name, public_repos, followers }) => ({
+            login,
+            name,
+            public_repos,
+            followers,
+         }))
    }
 }
 
@@ -24,13 +24,28 @@ export class Favorites {
    }
 
    load() {
-      this.entries =  JSON.parse(localStorage.getItem('@github-favorites:')) || []      
+      this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
    }
 
-   async add(username)  {
-      const user = await GithubUser.search(username)
+   save() {
+      localStorage.setItem('@github-favorites:', JSON.stringify(this.entries))
+   }
 
-      console.log(user)
+   async add(username) {
+      try {
+         const user = await GithubUser.search(username)
+
+         if (user.login === undefined) {
+            throw new Error('Usuário não encontrado!!')
+         }
+
+         this.entries = [user, ...this.entries]
+         this.update()
+         this.save()
+
+      } catch (error) {
+         alert(error.message)
+      }
    }
 
    delete(user) {
@@ -39,9 +54,10 @@ export class Favorites {
 
       this.entries = filteredEntries
       this.update()
+      this.save()
    }
 
-      
+
 }
 
 //classe que vai criar a visualização e eventos do HTML
