@@ -24,6 +24,14 @@ export class Favorites {
       ]
    }
 
+   delete(user) {
+      //Higher-order functions (map, find, reduce)
+      const filteredEntries = this.entries.filter(entry => entry.login !== user.login)
+
+      console.log(filteredEntries)
+   }
+
+      
 }
 
 //classe que vai criar a visualização e eventos do HTML
@@ -39,24 +47,30 @@ export class FavoritesView extends Favorites {
    update() {
       this.removeAllTr()
 
-   this.entries.forEach( user => {
-      const row = this.createRow()
+      this.entries.forEach(user => {
+         const row = this.createRow()
 
-      row.querySelector('.user img').src = `https://github.com/${user.login}.png`
+         row.querySelector('.user img').src = `https://github.com/${user.login}.png`
 
-      row.querySelector('.user img').alt = `Imagem de ${user.name}`
+         row.querySelector('.user img').alt = `Imagem de ${user.name}`
 
-      row.querySelector('.user p').textContent = user.name
-      
-      row.querySelector('.user span').textContent = user.login
-      
-      row.querySelector('.repositories').textContent = user.public_repos
+         row.querySelector('.user p').textContent = user.name
 
-      row.querySelector('.followers').textContent = user.followers
+         row.querySelector('.user span').textContent = user.login
 
-      this.tbody.append(row)
+         row.querySelector('.repositories').textContent = user.public_repos
 
-   })
+         row.querySelector('.followers').textContent = user.followers
+
+         row.querySelector('.remove').onclick = () => {
+            const iMakeSure = confirm('Tem certeza que deseja deletar essa linha ?')
+            if (iMakeSure) {
+               this.delete(user)
+            }
+         }
+
+         this.tbody.append(row)
+      })
    }
 
    createRow() {
